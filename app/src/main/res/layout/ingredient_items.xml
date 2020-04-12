@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/ingrds"
+        style="@style/step"
+        android:background="@color/exo_edit_mode_background_color"
+        android:textColor="@color/black"
+        tools:text="@tools:sample/lorem"
+        tools:textSize="@dimen/text_standard_size" />
+
+</layout>

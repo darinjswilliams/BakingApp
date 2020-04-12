@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?><!-- Fragment Layout that display Recipes First Screen -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="recipe"
+            type="com.popular.baking.dto.Recipe" />
+        
+        
+    </data>
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginBottom="@dimen/margin_standard_size_vertical"
+            android:layout_marginTop="@dimen/margin_standard_size_vertical"
+            android:layout_marginLeft="@dimen/margin_standard_size_horizontal"
+            android:layout_marginRight="@dimen/margin_standard_size_horizontal"
+            app:cardBackgroundColor="@color/cardview_shadow_start_color"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="5dp">
+
+                <TextView
+                    android:id="@+id/my_recipe_name"
+                    android:text="@{recipe.name}"
+                    style="@style/recipe"
+                    tools:text="@string/food"
+                    />
+            
+        </androidx.cardview.widget.CardView>
+    
+
+</layout>

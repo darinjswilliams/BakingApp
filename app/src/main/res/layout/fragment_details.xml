@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        style="@style/linear_layout_match"
+        android:layout_width="match_parent">
+
+
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/exo_video_player"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="@dimen/stand_padding"
+            android:layout_marginRight="@dimen/stand_padding"
+            android:layout_marginBottom="@dimen/bottom_padding"
+            android:layout_weight="3"
+            app:default_artwork="@drawable/exo_notification_small_icon"
+            app:use_artwork="true" />
+
+        <TextView
+            android:id="@+id/step_details"
+            style="@style/format_of_steps"
+            android:layout_weight="5"
+            android:textSize="@dimen/sixteenSP_padding"
+            tools:text="@tools:sample/lorem/random" />
+
+        <LinearLayout
+            android:id="@+id/inner_step_details"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:animateLayoutChanges="true"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/previous_btn"
+                android:text="@string/previous"
+                android:layout_weight="1"
+                style="@style/button"/>
+
+            <Button
+                android:id="@+id/next_btn"
+                android:text="@string/next"
+                android:layout_weight="1"
+                style="@style/button"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</layout>
