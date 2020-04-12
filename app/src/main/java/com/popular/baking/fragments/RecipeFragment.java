@@ -59,6 +59,7 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnItemClic
 
         if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getActivity().setTitle(Constants.BAKING);
         }
 
         new LifeCycleEventManager(TAG).registerLifeCycleEvent(getLifecycle());

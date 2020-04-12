@@ -78,6 +78,7 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
         RecipeDetailsViewModel recipeDetailsViewModel = new ViewModelProvider(this, rdvmFactory).get(RecipeDetailsViewModel.class);
         recipeDetailsViewModel.getRecipeIngredientAndSteps().observe(getViewLifecycleOwner(), recipeStepsAndIngredients -> {
             mRecipeDetailsAdapter.setRecipeStepsAndIngredients(recipeStepsAndIngredients);
+            getActivity().setTitle(recipeStepsAndIngredients.recipe.getName());
         });
 
 

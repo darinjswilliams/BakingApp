@@ -22,4 +22,5 @@ public class Constants {
     public final static String INGRIDENTS = "Ingridents";
     public static final int STACKCOUNT = 1;
     public static final int STACK_ITEMS = 2;
+    public static final String BAKING = "BAKING APP";
 }
