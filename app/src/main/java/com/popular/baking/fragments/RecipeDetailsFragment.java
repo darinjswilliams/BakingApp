@@ -11,10 +11,13 @@ import com.popular.baking.R;
 import com.popular.baking.adapters.RecipeDetailsAdapter;
 import com.popular.baking.constants.Constants;
 import com.popular.baking.dto.RecipeStepsAndIngredients;
+import com.popular.baking.dto.Steps;
 import com.popular.baking.networkUtils.LifeCycleEventManager;
 import com.popular.baking.view.MainActivity;
 import com.popular.baking.viewmodel.RecipeDetailsViewModel;
 import com.popular.baking.viewmodel.RecipeDetailsViewModelFactory;
+
+import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -124,21 +127,37 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
 
     @Override
     public void clickRecipeDetails(RecipeStepsAndIngredients recipeStepsAndIngredients, int position) {
-        RecipeDetailsFragment fragment = new RecipeDetailsFragment();
+        Fragment fragment = new DetailsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(getString(R.string.ADDITIONAL_STEPS), (ArrayList<Steps>)
+                recipeStepsAndIngredients.steps);
+
+        bundle.putInt(getString(R.string.EXTRA_POSITION), position);
+
+        bundle.putString(Constants.NAME_OF_RECIPE, recipeStepsAndIngredients.recipe.getName());
+
+        fragment.setArguments(bundle);
+
         getParentFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_containier, fragment, RecipeDetailsFragment.TAG)
+                .replace(R.id.fragment_containier, fragment, DetailsFragment.TAG)
                 .addToBackStack(null)
                 .commit();
     }
 
     @Override
     public void clickRecipeDetails(String recipeDetails, String nameOfRecipe) {
-        RecipeDetailsFragment fragment = new RecipeDetailsFragment();
+        Fragment fragment = new DetailsFragment();
+        ;
+        Bundle bundle = new Bundle();
+        bundle.putString(getString(R.string.INGRIDENTS_EXTRA), recipeDetails);
+        bundle.putString(Constants.NAME_OF_RECIPE, nameOfRecipe);
+
+        fragment.setArguments(bundle);
 
         getParentFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_details_containier, fragment, RecipeDetailsFragment.TAG)
+                .replace(R.id.fragment_details_containier, fragment, DetailsFragment.TAG)
                 .addToBackStack(null)
                 .commit();
 

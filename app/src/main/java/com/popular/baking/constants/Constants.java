@@ -23,4 +23,13 @@ public class Constants {
     public static final int STACKCOUNT = 1;
     public static final int STACK_ITEMS = 2;
     public static final String BAKING = "BAKING APP";
+    public static final String NAME_OF_RECIPE = "Name of Recipe" ;
+    public static final int BOTTOM = 0;
+    public static final int TOP = 0;
+    public static final int RIGHT = 0;
+    public static final int LEFT = 0;
+    public static final int VIDEO_PLAYED_LAST = -1;
+    public static final String PLAYED_LAST_VIDEO = "LAST VIDEO";
+    public static final String VIDEO_RESUME_POSITION = "VIDEO RESUME POSITION" ;
+    public static final String WINDOW_RESUME = "RESUME WINDOW";
 }

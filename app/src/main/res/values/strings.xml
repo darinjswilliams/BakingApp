@@ -9,8 +9,11 @@
     <string name="navigation_drawer_close">Close</string>
     <string name="food">Baked Goods</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
+    <string name="ADDITIONAL_STEPS">ADDITIONAL_STEPS</string>
+    <string name="NAME_OF_RECIPE">Name Of Recipe</string>
+    <string name="INGRIDENTS_EXTRA">INGRIDENTS_EXTRA</string>
+    <string name="EXTRA_POSITION">extra_position</string>
 </resources>

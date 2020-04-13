@@ -13,7 +13,8 @@ public class BuildUtils {
         for (int knt = 0; knt < ingredients.size(); knt++) {
             switch (knt) {
                 case 0:
-                    mBuilder.append(Constants.INGRIDENTS + "\n");
+                    mBuilder.append(Constants.INGRIDENTS);
+                    mBuilder.append("\n");
                     break;
 
                 default:
