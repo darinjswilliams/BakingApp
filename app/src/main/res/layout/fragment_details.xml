@@ -2,54 +2,69 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    app:layout_constraintGuide_percent="0.5">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         style="@style/linear_layout_match"
+        android:layout_height="584dp"
         android:animateLayoutChanges="true">
 
-    <com.google.android.exoplayer2.ui.PlayerView
-        android:id="@+id/exo_video_player"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginLeft="@dimen/stand_padding"
-        android:layout_marginRight="@dimen/stand_padding"
-        android:layout_marginBottom="@dimen/bottom_padding"
-        android:layout_weight="3"
-        app:default_artwork="@drawable/exo_notification_small_icon"
-        app:use_artwork="true" />
 
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/exo_video_player"
+            android:layout_width="658dp"
+            android:layout_height="342dp"
+            android:layout_weight="3"
+            app:default_artwork="@drawable/exo_notification_small_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.538"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:use_artwork="true" />
 
-    <TextView
-        android:id="@+id/step_details"
-        style="@style/format_of_steps"
-        android:layout_width="wrap_content"
-        android:layout_height="152dp"
-        android:layout_weight="4"
-        android:textSize="@dimen/sixteenSP_padding"
-        tools:text="@tools:sample/lorem/random" />
-
-    <LinearLayout
-        android:id="@+id/inner_step_details"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:animateLayoutChanges="true"
-        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/step_details"
+            style="@style/format_of_steps"
+            android:layout_width="414dp"
+            android:layout_height="152dp"
+            android:layout_marginTop="1dp"
+            android:layout_weight="4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/exo_video_player"
+            tools:text="@tools:sample/lorem/random" />
 
         <Button
             android:id="@+id/previous_btn"
             style="@style/button"
-            android:layout_weight="1"
-            android:text="@string/previous" />
+            android:layout_width="179dp"
+            android:layout_height="61dp"
+            android:layout_marginTop="3dp"
+            android:text="@string/previous"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/step_details" />
 
         <Button
             android:id="@+id/next_btn"
             style="@style/button"
+            android:layout_width="180dp"
+            android:layout_height="69dp"
             android:layout_weight="1"
-            android:text="@string/next" />
+            android:text="@string/next"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/step_details" />
 
-    </LinearLayout>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="196dp" />
 
-</LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

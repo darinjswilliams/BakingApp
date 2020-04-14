@@ -74,6 +74,7 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
         bindRecylcerView(view);
 
 
+        //Create Factory to get instance of applicaiton repo
         RecipeDetailsViewModelFactory rdvmFactory = new RecipeDetailsViewModelFactory(
                 (Application) this.getContext().getApplicationContext(), recipeId);
 

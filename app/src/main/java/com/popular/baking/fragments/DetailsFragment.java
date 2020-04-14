@@ -158,7 +158,7 @@ public class DetailsFragment extends Fragment {
     private void exitFullScreenMode() {
 
         //make details visiable when exiting full screen
-        mFragmentDetailsBinding.innerStepDetails.setVisibility(View.VISIBLE);
+//        mFragmentDetailsBinding.innerStepDetails.setVisibility(View.VISIBLE);
         mFragmentDetailsBinding.stepDetails.setVisibility(View.VISIBLE);
 
         if (getActivity() instanceof MainActivity) {
@@ -182,7 +182,7 @@ public class DetailsFragment extends Fragment {
     private void enableFullScreenMode() {
 
         //Hide screen details on full screen
-        mFragmentDetailsBinding.innerStepDetails.setVisibility(View.GONE);
+//        mFragmentDetailsBinding.innerStepDetails.setVisibility(View.GONE);
         mFragmentDetailsBinding.stepDetails.setVisibility(View.GONE);
 
         if (getActivity() instanceof MainActivity) {
@@ -380,7 +380,7 @@ public class DetailsFragment extends Fragment {
     private void hideScreenDetailsExceptIngridents() {
         hideNextBtn();
         hidePreviousBtn();
-        mFragmentDetailsBinding.innerStepDetails.setVisibility(View.GONE);
+//        mFragmentDetailsBinding.innerStepDetails.setVisibility(View.GONE);
 
     }
 
