@@ -26,6 +26,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+
 public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdapter.OnClickDetailListener {
 
     public static final String TAG = RecipeDetailsFragment.class.getSimpleName();
@@ -33,18 +35,19 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
     private RecyclerView mRecylcerView;
     private RecipeDetailsAdapter mRecipeDetailsAdapter;
     private MainActivity mHostActivty;
-//    private RecipeDetailsFragmentBinding recipeDetailsFragmentBinding;
+    //    private RecipeDetailsFragmentBinding recipeDetailsFragmentBinding;
     public int recipeId;
 
     //Binding
 
-    public RecipeDetailsFragment() { }
+    public RecipeDetailsFragment() {
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        super.onCreateView(inflater,container, savedInstanceState);
+        super.onCreateView(inflater, container, savedInstanceState);
 
         final View view = inflater.inflate(R.layout.recipe_details_fragment, container, false);
 //        recipeDetailsFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.recipe_details_fragment, container, false);
@@ -86,7 +89,6 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
         });
 
 
-
 //        return recipeDetailsFragmentBinding.getRoot().getRootView();
         return view;
     }
@@ -109,9 +111,6 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
 //        mRecylcerView = recipeDetailsFragmentBinding.getRoot().getRootView().findViewById(R.id.detail_fragment);
         mRecylcerView = view.findViewById(R.id.detail_fragment);
         mRecipeDetailsAdapter = new RecipeDetailsAdapter(this);
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(recipeDetailsFragmentBinding.getRoot().getContext(),
-//                RecyclerView.VERTICAL, false);
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(),
                 RecyclerView.VERTICAL, false);
 
@@ -156,11 +155,52 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
 
         fragment.setArguments(bundle);
 
-        getParentFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_details_containier, fragment, DetailsFragment.TAG)
-                .addToBackStack(null)
-                .commit();
+
+    }
+
+    private void processFragmentTransition(Fragment frag) {
+
+        if (getActivity() instanceof MainActivity) {
+
+            if (((MainActivity) getActivity()).mTabletPane) {
+
+                Log.d(TAG, "processFragmentTransition: I AM A TABLET");
+                //DISPLAY TABLET VIEW
+                displayTabletPanes();
+
+
+                if (getActivity().getSupportFragmentManager().findFragmentByTag(DetailsFragment.TAG) != null) {
+                    getParentFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_details_containier, frag, DetailsFragment.TAG)
+                            .addToBackStack(null)
+                            .commit();
+                } else {
+
+                    getParentFragmentManager()
+                            .beginTransaction()
+                            .add(R.id.fragment_details_containier, frag, DetailsFragment.TAG)
+                            .addToBackStack(null)
+                            .commit();
+                }
+            } else {
+
+                getParentFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.fragment_containier, frag, DetailsFragment.TAG)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        }
+    }
+
+    private void displayTabletPanes() {
+        MainActivity mActivity = (MainActivity) getActivity();
+        ViewGroup.LayoutParams layoutParams = mActivity.paneOne.getLayoutParams();
+        layoutParams.width = WRAP_CONTENT;
+        mActivity.paneOne.setLayoutParams(layoutParams);
+        mActivity.paneTwo.setVisibility(View.VISIBLE);
+        mActivity.divider.setVisibility(View.VISIBLE);
 
     }
 

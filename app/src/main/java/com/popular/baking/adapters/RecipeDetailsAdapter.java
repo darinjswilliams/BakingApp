@@ -49,7 +49,6 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsAdap
     public void onBindViewHolder(@NonNull RecipeDetailsAdapter.MyRecipeDetailsAdapterHolder holder, int position) {
 
 
-
         switch (position) {
             case 0:
 
@@ -60,7 +59,7 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsAdap
                         recipeStepsAndIngredients.recipe.getName());
             default:
 
-                Log.i(TAG, "onBindViewHolder: description.."+ recipeStepsAndIngredients.steps.get(position ).getShortDescription() );
+                Log.i(TAG, "onBindViewHolder: description.." + recipeStepsAndIngredients.steps.get(position).getShortDescription());
                 holder.bindRecipePosition(recipeStepsAndIngredients.steps.get(position ).getShortDescription(),
                         recipeStepsAndIngredients, this.onClickDetailListener, position );
         }

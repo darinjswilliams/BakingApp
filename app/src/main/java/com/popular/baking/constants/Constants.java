@@ -19,7 +19,7 @@ public class Constants {
 
     public final static String IngridentsAndStepKey = "IngridentsAndStepKey";
     public final static String TAG_DETAILS_FRAGMENT_KEY = "RecipeDetailsFragment";
-    public final static String INGRIDENTS = "Ingridents";
+    public final static String INGRIDENTS = "Ingridents\n";
     public static final int STACKCOUNT = 1;
     public static final int STACK_ITEMS = 2;
     public static final String BAKING = "BAKING APP";

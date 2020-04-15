@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,6 +32,7 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnItemClic
     private RecipeAdapter mRecipeAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private RecipeViewModel mRecipeViewModel;
+    private LinearLayoutManager linearLayoutManager;
 
 
     public static final String TAG = RecipeFragment.class.getSimpleName();
@@ -78,8 +80,23 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnItemClic
 
         //Todo check for table and get correct layout
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL,
-                false);
+        if (getActivity() instanceof MainActivity) {
+
+            //Check to see if Tablet, if true than set up grid
+            if (((MainActivity) getActivity()).mTabletPane) {
+
+                Log.d(TAG, "initRecycleView: I AM A TABLET");
+                linearLayoutManager = new GridLayoutManager(context, 3, RecyclerView.VERTICAL,
+                        false);
+            } else {
+
+                linearLayoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL,
+                        false);
+
+            }
+
+        }
+
         mRecipeAdapter = new RecipeAdapter(this);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setAdapter(mRecipeAdapter);

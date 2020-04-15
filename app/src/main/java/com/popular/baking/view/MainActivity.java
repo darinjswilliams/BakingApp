@@ -4,10 +4,11 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.popular.baking.R;
 import com.popular.baking.constants.Constants;
-import com.popular.baking.databinding.ActivityMainBinding;
 import com.popular.baking.dto.Recipe;
 import com.popular.baking.fragments.RecipeFragment;
 import com.popular.baking.networkUtils.AppRepository;
@@ -21,11 +22,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private ActivityMainBinding mBinding;
     private ActionBarDrawerToggle toggle;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -33,6 +35,10 @@ public class MainActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private AppRepository appRepository;
     private List<Recipe> mRecipe = new ArrayList<>();
+    public boolean mTabletPane;
+    public FrameLayout paneOne;
+    public FrameLayout paneTwo;
+    public View divider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +48,26 @@ public class MainActivity extends AppCompatActivity {
 
 //        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setContentView(R.layout.activity_main);
+
+
+        //Check Pane Layout to determine if it is a tablet or phone
+        if((findViewById(R.id.recipe_linear_layout) != null)){
+
+            Log.d(TAG, "onCreate: I AM A TABLET");
+            mTabletPane = true;
+            divider = findViewById(R.id.fragment_divider);
+            paneOne = findViewById(R.id.fragment_containier);
+            paneTwo = findViewById(R.id.fragment_details_containier);
+            ViewGroup.LayoutParams  layoutParams = paneOne.getLayoutParams();
+            layoutParams.width = MATCH_PARENT;
+
+            divider.setVisibility(View.GONE);
+            paneTwo.setVisibility(View.GONE);
+
+        } else {
+            mTabletPane = false;
+
+        }
 
 //        setSupportActionBar(mBinding.toolbar);
         setTitle("Recipes");
@@ -67,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
 //        mBinding.drawerLayout.addDrawerListener(toggle);
 //        toggle.syncState();
 
-        //Todo check for tablet
 
         RecipeFragment recipeFragment = new RecipeFragment();
 

@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
+<merge>
 
     <LinearLayout
         android:id="@+id/drawer_layout"
@@ -35,5 +35,5 @@
 
 
     </LinearLayout>
-
+</merge>
 </layout>
