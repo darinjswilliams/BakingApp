@@ -17,4 +17,5 @@
     <string name="INGRIDENTS_EXTRA">INGRIDENTS_EXTRA</string>
     <string name="EXTRA_POSITION">extra_position</string>
     <string name="ingridents">Ingridents</string>
+    <string name="appwidget_text">Recipes</string>
 </resources>
