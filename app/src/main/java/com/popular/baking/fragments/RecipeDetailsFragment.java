@@ -62,7 +62,7 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
 
             //lets check state
             if (savedInstanceState != null && recipeId == -1) {
-                recipeId = savedInstanceState.getInt(Constants.TAG_DETAILS_FRAGMENT_KEY);
+                recipeId = savedInstanceState.getInt(Constants.SAVED_RECIPE_ID);
             }
 
             Log.i(TAG, "onCreateView: ID....." + recipeId);
@@ -155,7 +155,7 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
 
         fragment.setArguments(bundle);
 
-
+        processFragmentTransition(fragment);
     }
 
     private void processFragmentTransition(Fragment frag) {
