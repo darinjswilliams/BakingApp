@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 
 import com.popular.baking.R;
 import com.popular.baking.constants.Constants;
+import com.popular.baking.databinding.ActivityMainBinding;
 import com.popular.baking.dto.Recipe;
 import com.popular.baking.fragments.RecipeFragment;
 import com.popular.baking.networkUtils.AppRepository;
@@ -19,6 +20,7 @@ import java.util.List;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     public FrameLayout paneOne;
     public FrameLayout paneTwo;
     public View divider;
+    public ActivityMainBinding mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,19 +49,18 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentManager = getSupportFragmentManager();
 
-//        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setContentView(R.layout.activity_main);
 
 
         //Check Pane Layout to determine if it is a tablet or phone
-        //the two Pane layout does not exist on phone
         if((findViewById(R.id.recipe_linear_layout) != null)){
 
             Log.d(TAG, "onCreate: I AM A TABLET");
             mTabletPane = true;
             divider = findViewById(R.id.fragment_divider);
-            paneOne = findViewById(R.id.fragment_containier);
-            paneTwo = findViewById(R.id.fragment_details_containier);
+            paneOne =  mBinding.fragmentContainier;
+            paneTwo =  mBinding.fragmentDetailsContainier;
             ViewGroup.LayoutParams  layoutParams = paneOne.getLayoutParams();
             layoutParams.width = MATCH_PARENT;
 
@@ -74,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setHomeButtonEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
+
+
 
         RecipeFragment recipeFragment = new RecipeFragment();
 

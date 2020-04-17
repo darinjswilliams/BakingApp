@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import com.popular.baking.R;
 import com.popular.baking.adapters.RecipeAdapter;
 import com.popular.baking.constants.Constants;
+import com.popular.baking.databinding.RecipeFragmentBinding;
 import com.popular.baking.dto.Recipe;
 import com.popular.baking.networkUtils.LifeCycleEventManager;
 import com.popular.baking.view.MainActivity;
@@ -33,6 +34,7 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnItemClic
     private RecyclerView.LayoutManager layoutManager;
     private RecipeViewModel mRecipeViewModel;
     private LinearLayoutManager linearLayoutManager;
+    private RecipeFragmentBinding recipeFragmentBinding;
 
 
     public static final String TAG = RecipeFragment.class.getSimpleName();
@@ -45,6 +47,8 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnItemClic
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
+
         View rootView = inflater.inflate(R.layout.recipe_fragment, container, false);
 
         mRecyclerView = rootView.findViewById(R.id.my_recycler_view);
@@ -104,6 +108,11 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnItemClic
 
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(Constants.BAKING, RecipeFragment.TAG);
+    }
 
     @Override
     public void onClick(Recipe recipe) {

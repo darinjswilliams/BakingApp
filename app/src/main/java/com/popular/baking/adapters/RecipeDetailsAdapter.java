@@ -57,18 +57,21 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsAdap
                 holder.clickBindIngredients(BuildUtils.menuBuilderForIngridents(
                         recipeStepsAndIngredients.ingredients), this.onClickDetailListener,
                         recipeStepsAndIngredients.recipe.getName());
+                break;
+
             default:
 
                 Log.i(TAG, "onBindViewHolder: description.." + recipeStepsAndIngredients.steps.get(position).getShortDescription());
-                holder.bindRecipePosition(recipeStepsAndIngredients.steps.get(position ).getShortDescription(),
-                        recipeStepsAndIngredients, this.onClickDetailListener, position );
+                holder.bindRecipePosition(recipeStepsAndIngredients.steps.get(position - 1).getShortDescription(),
+                        recipeStepsAndIngredients, this.onClickDetailListener, position - 1);
+                break;
         }
 
     }
 
     @Override
     public int getItemCount() {
-        return recipeStepsAndIngredients != null ? recipeStepsAndIngredients.steps.size() : 0;
+        return recipeStepsAndIngredients != null ? recipeStepsAndIngredients.steps.size() + 1: 0;
     }
 
     public void setRecipeStepsAndIngredients(RecipeStepsAndIngredients recipeStepsAndIngredients) {
@@ -104,9 +107,10 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsAdap
         }
 
         public void clickBindIngredients(String list, OnClickDetailListener onClickDetailListener, String ingredList) {
-
+            mIngredientItemsBinding.executePendingBindings();
             Log.i(TAG, "clickBindIngredients: Detail.." + list);
             mIngredientItemsBinding.ingrds.setOnClickListener(v -> onClickDetailListener.clickRecipeDetails(list, ingredList));
+
         }
 
         public void bindRecipePosition(String shortDescription, RecipeStepsAndIngredients recipeStepsAndIngredients, OnClickDetailListener onClickDetailListener, int position) {

@@ -62,7 +62,7 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
 
             //lets check state
             if (savedInstanceState != null && recipeId == -1) {
-                recipeId = savedInstanceState.getInt(Constants.TAG_DETAILS_FRAGMENT_KEY);
+                recipeId = savedInstanceState.getInt(Constants.SAVED_RECIPE_ID);
             }
 
             Log.i(TAG, "onCreateView: ID....." + recipeId);
@@ -84,8 +84,8 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
 
         RecipeDetailsViewModel recipeDetailsViewModel = new ViewModelProvider(this, rdvmFactory).get(RecipeDetailsViewModel.class);
         recipeDetailsViewModel.getRecipeIngredientAndSteps().observe(getViewLifecycleOwner(), recipeStepsAndIngredients -> {
-            getActivity().setTitle(recipeStepsAndIngredients.recipe.getName());
             mRecipeDetailsAdapter.setRecipeStepsAndIngredients(recipeStepsAndIngredients);
+            getActivity().setTitle(recipeStepsAndIngredients.recipe.getName());
         });
 
 
@@ -138,13 +138,11 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
 
         fragment.setArguments(bundle);
 
-        processFragmentTransition(fragment);
-
-//        getParentFragmentManager()
-//                .beginTransaction()
-//                .replace(R.id.fragment_containier, fragment, DetailsFragment.TAG)
-//                .addToBackStack(null)
-//                .commit();
+        getParentFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_containier, fragment, DetailsFragment.TAG)
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override
@@ -156,8 +154,8 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
         bundle.putString(Constants.NAME_OF_RECIPE, nameOfRecipe);
 
         fragment.setArguments(bundle);
-        processFragmentTransition(fragment);
 
+        processFragmentTransition(fragment);
     }
 
     private void processFragmentTransition(Fragment frag) {
