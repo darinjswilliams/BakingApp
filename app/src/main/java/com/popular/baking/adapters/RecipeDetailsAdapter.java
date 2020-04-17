@@ -100,7 +100,7 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsAdap
         public void bind(String ingridents) {
             Log.i(TAG, "bind: HERE ARE THE INGRIDENTS.." + ingridents);
             mIngredientItemsBinding.ingrds.setText(ingridents);
-            mIngredientItemsBinding.executePendingBindings();
+//            mIngredientItemsBinding.executePendingBindings();
         }
 
         public void clickBindIngredients(String list, OnClickDetailListener onClickDetailListener, String ingredList) {

@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Check Pane Layout to determine if it is a tablet or phone
+        //the two Pane layout does not exist on phone
         if((findViewById(R.id.recipe_linear_layout) != null)){
 
             Log.d(TAG, "onCreate: I AM A TABLET");
@@ -69,30 +70,10 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-//        setSupportActionBar(mBinding.toolbar);
         setTitle("Recipes");
 
         getSupportActionBar().setHomeButtonEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
-
-//        fragmentManager.addOnBackStackChangedListener(() -> {
-//            int checkHeightOfStack = fragmentManager.getBackStackEntryCount();
-//
-//            if (checkHeightOfStack > Constants.STACKCOUNT) {
-//                getSupportActionBar().setHomeButtonEnabled(false);
-//                getSupportActionBar().setDisplayShowHomeEnabled(false);
-//            } else {
-//                getSupportActionBar().setDisplayShowHomeEnabled(true);
-//                getSupportActionBar().setHomeButtonEnabled(true);
-//            }
-//        });
-
-
-//        toggle = new ActionBarDrawerToggle(this, mBinding.drawerLayout, mBinding.toolbar,
-//                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-//        mBinding.drawerLayout.addDrawerListener(toggle);
-//        toggle.syncState();
-
 
         RecipeFragment recipeFragment = new RecipeFragment();
 

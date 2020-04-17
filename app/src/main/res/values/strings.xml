@@ -16,4 +16,6 @@
     <string name="NAME_OF_RECIPE">Name Of Recipe</string>
     <string name="INGRIDENTS_EXTRA">INGRIDENTS_EXTRA</string>
     <string name="EXTRA_POSITION">extra_position</string>
+    <string name="appwidget_text">Recipes</string>
+    <string name="add_widget">Add widget</string>
 </resources>

@@ -84,8 +84,8 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
 
         RecipeDetailsViewModel recipeDetailsViewModel = new ViewModelProvider(this, rdvmFactory).get(RecipeDetailsViewModel.class);
         recipeDetailsViewModel.getRecipeIngredientAndSteps().observe(getViewLifecycleOwner(), recipeStepsAndIngredients -> {
-            mRecipeDetailsAdapter.setRecipeStepsAndIngredients(recipeStepsAndIngredients);
             getActivity().setTitle(recipeStepsAndIngredients.recipe.getName());
+            mRecipeDetailsAdapter.setRecipeStepsAndIngredients(recipeStepsAndIngredients);
         });
 
 
@@ -138,11 +138,13 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
 
         fragment.setArguments(bundle);
 
-        getParentFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_containier, fragment, DetailsFragment.TAG)
-                .addToBackStack(null)
-                .commit();
+        processFragmentTransition(fragment);
+
+//        getParentFragmentManager()
+//                .beginTransaction()
+//                .replace(R.id.fragment_containier, fragment, DetailsFragment.TAG)
+//                .addToBackStack(null)
+//                .commit();
     }
 
     @Override
@@ -154,7 +156,7 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
         bundle.putString(Constants.NAME_OF_RECIPE, nameOfRecipe);
 
         fragment.setArguments(bundle);
-
+        processFragmentTransition(fragment);
 
     }
 

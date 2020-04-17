@@ -49,7 +49,7 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnItemClic
 
         mRecyclerView = rootView.findViewById(R.id.my_recycler_view);
 
-        initRecycleView(rootView.getContext());
+        initRecycleView(getActivity());
 
         mRecipeViewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
 
