@@ -32,6 +32,7 @@ public class AppRepository {
     private List<Recipe> mRecipe = new ArrayList<Recipe>();
     private List<Ingredients> mIngredientsList = new ArrayList<Ingredients>();
     private List<Steps> mStepsLists = new ArrayList<Steps>();
+    private List<RecipeStepsAndIngredients> mRecipeStepsAndIngredients = new ArrayList<RecipeStepsAndIngredients>();
     AppDatabase appDB;
     AppExecutors appExecutors;
 
@@ -130,6 +131,19 @@ public class AppRepository {
 
     }
 
+
+    public List<RecipeStepsAndIngredients> getIngridentsForWidgets(int recipeId){
+        Log.i(TAG, "getIngridentsForWidgets: ");
+
+        appExecutors.mDbExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+               mRecipeStepsAndIngredients = appDB.recipeDao().getIngredientsAndStepsforWidget(recipeId);
+            }
+        });
+
+        return mRecipeStepsAndIngredients;
+    }
 
 
 

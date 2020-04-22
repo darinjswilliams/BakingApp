@@ -1,5 +1,7 @@
 package com.popular.baking.dao;
 
+import android.database.Cursor;
+
 import com.popular.baking.dto.Recipe;
 import com.popular.baking.dto.RecipeStepsAndIngredients;
 
@@ -27,4 +29,12 @@ public interface RecipeDao {
     @Transaction
     @Query("SELECT * FROM Recipe where id = :recipeId")
     LiveData<RecipeStepsAndIngredients> getIngredientsAndSteps(int recipeId);
+
+
+    @Transaction
+    @Query("SELECT * FROM Recipe where id = :recipeId")
+    List<RecipeStepsAndIngredients> getIngredientsAndStepsforWidget(int recipeId);
+
+    @Query("SELECT * FROM  RECIPE")
+    Cursor selectAll();
 }

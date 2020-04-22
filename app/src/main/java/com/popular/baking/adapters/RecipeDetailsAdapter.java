@@ -61,7 +61,6 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsAdap
 
             default:
 
-                Log.i(TAG, "onBindViewHolder: description.." + recipeStepsAndIngredients.steps.get(position).getShortDescription());
                 holder.bindRecipePosition(recipeStepsAndIngredients.steps.get(position - 1).getShortDescription(),
                         recipeStepsAndIngredients, this.onClickDetailListener, position - 1);
                 break;

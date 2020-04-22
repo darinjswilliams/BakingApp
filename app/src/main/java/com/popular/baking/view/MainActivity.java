@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private AppRepository appRepository;
     private List<Recipe> mRecipe = new ArrayList<>();
-    public boolean mTabletPane;
+    public static boolean mTabletPane;
     public FrameLayout paneOne;
     public FrameLayout paneTwo;
     public View divider;

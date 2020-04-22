@@ -1,15 +1,19 @@
 package com.popular.baking.fragments;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
 import com.popular.baking.R;
 import com.popular.baking.adapters.RecipeDetailsAdapter;
 import com.popular.baking.constants.Constants;
+import com.popular.baking.dto.Ingredients;
 import com.popular.baking.dto.RecipeStepsAndIngredients;
 import com.popular.baking.dto.Steps;
 import com.popular.baking.networkUtils.LifeCycleEventManager;
@@ -18,6 +22,7 @@ import com.popular.baking.viewmodel.RecipeDetailsViewModel;
 import com.popular.baking.viewmodel.RecipeDetailsViewModelFactory;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,6 +40,9 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
     private RecyclerView mRecylcerView;
     private RecipeDetailsAdapter mRecipeDetailsAdapter;
     private MainActivity mHostActivty;
+    private List<Ingredients> mIngredients = new ArrayList<Ingredients>();
+
+
     //    private RecipeDetailsFragmentBinding recipeDetailsFragmentBinding;
     public int recipeId;
 
@@ -56,13 +64,17 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
         Bundle arguments = getArguments();
 
 
+
         if (arguments != null) {
 
             recipeId = arguments.getInt(Constants.TAG_DETAILS_FRAGMENT_KEY, -1);
 
+
             //lets check state
             if (savedInstanceState != null && recipeId == -1) {
                 recipeId = savedInstanceState.getInt(Constants.SAVED_RECIPE_ID);
+
+
             }
 
             Log.i(TAG, "onCreateView: ID....." + recipeId);
@@ -86,6 +98,11 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
         recipeDetailsViewModel.getRecipeIngredientAndSteps().observe(getViewLifecycleOwner(), recipeStepsAndIngredients -> {
             mRecipeDetailsAdapter.setRecipeStepsAndIngredients(recipeStepsAndIngredients);
             getActivity().setTitle(recipeStepsAndIngredients.recipe.getName());
+
+            if(recipeStepsAndIngredients.recipe.getIngredients() != null) {
+                mIngredients.addAll(recipeStepsAndIngredients.recipe.getIngredients());
+                saveToSharePref(getActivity(), recipeStepsAndIngredients.recipe.getId());
+            }
         });
 
 
@@ -107,6 +124,21 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
         outState.putInt(Constants.SAVED_RECIPE_ID, recipeId);
     }
 
+    private void saveToSharePref(Context context, int recipeId) {
+
+        Log.i(TAG, "saveToSharePref: Saving Name.." + recipeId);
+        SharedPreferences prefs = context.getSharedPreferences(Constants.PREF, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(mIngredients);
+        editor.putInt(Constants.RECIPE_ID, recipeId);
+        editor.putString(Constants.IngridentsAndStepKey, json);
+        editor.apply();
+
+        //Todo update the widget with current recipe details
+
+    }
+
     private void bindRecylcerView(View view) {
 //        mRecylcerView = recipeDetailsFragmentBinding.getRoot().getRootView().findViewById(R.id.detail_fragment);
         mRecylcerView = view.findViewById(R.id.detail_fragment);
@@ -117,13 +149,6 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
         mRecylcerView.setLayoutManager(linearLayoutManager);
         mRecylcerView.setAdapter(mRecipeDetailsAdapter);
     }
-
-//    @Override
-//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-//        super.onActivityCreated(savedInstanceState);
-//        mViewModel = new ViewModelProvider(this).get(RecipeDetailsViewModel.class);
-//        // TODO: Use the ViewModel
-//    }
 
     @Override
     public void clickRecipeDetails(RecipeStepsAndIngredients recipeStepsAndIngredients, int position) {

@@ -17,5 +17,10 @@
     <string name="INGRIDENTS_EXTRA">INGRIDENTS_EXTRA</string>
     <string name="EXTRA_POSITION">extra_position</string>
     <string name="ingridents">Ingridents</string>
-    <string name="appwidget_text">Recipes</string>
+    <string name="reicpe_list">Yellow Cake</string>
+    <string name="empty_view_text">No Data Available</string>
+    <string name="appwidget_text">Ingredients</string>
+    <string name="add_widget">Recipe</string>
+    <string name="widget_empty_ingredients_message">No Ingredients</string>
+    <string name="no_recipe">No Recipe</string>
 </resources>

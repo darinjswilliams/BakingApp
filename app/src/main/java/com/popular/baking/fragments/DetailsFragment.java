@@ -42,7 +42,7 @@ public class DetailsFragment extends Fragment {
 
 
     public static final String TAG = DetailsFragment.class.getSimpleName();
-    FragmentDetailsBinding mFragmentDetailsBinding;
+    public FragmentDetailsBinding mFragmentDetailsBinding;
 
     private int defaultAninamtion;
 

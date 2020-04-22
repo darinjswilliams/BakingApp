@@ -32,4 +32,7 @@ public class Constants {
     public static final String PLAYED_LAST_VIDEO = "LAST VIDEO";
     public static final String VIDEO_RESUME_POSITION = "VIDEO RESUME POSITION" ;
     public static final String WINDOW_RESUME = "RESUME WINDOW";
+    public static final String PREF = "Preferences";
+    public static final int defaultValue = 0;
+    public static final String RECIPE_ID = "Id";
 }
