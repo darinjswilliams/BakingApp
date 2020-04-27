@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -22,6 +23,9 @@ public class RecipeAppWidgetProvider extends AppWidgetProvider {
     private static final String TAG = RecipeAppWidgetProvider.class.getSimpleName();
     public static RecipeStepsAndIngredients mRecipeSelected;
 
+    public RecipeAppWidgetProvider() {
+    }
+
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
@@ -30,7 +34,7 @@ public class RecipeAppWidgetProvider extends AppWidgetProvider {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_app_widget_provider);
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-        views.setOnClickPendingIntent(R.id.widgetTitleLabel, pendingIntent);
+        views.setOnClickPendingIntent(R.id.widgetTitleLabel_text, pendingIntent);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -75,82 +79,26 @@ public class RecipeAppWidgetProvider extends AppWidgetProvider {
         resizeWidget(newOptions, views);
     }
 
-    private void resizeWidget(Bundle appWidgetOptins, RemoteViews views){
+    private void resizeWidget(Bundle appWidgetOptins, RemoteViews views) {
 
         int minWidth = appWidgetOptins.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
         int maxWidth = appWidgetOptins.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
         int minHeight = appWidgetOptins.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
         int maxHeight = appWidgetOptins.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
 
-        if(maxHeight > 100){
+        if (maxHeight > 100) {
             views.setViewVisibility(R.id.recipe_example_widget_item_text, View.VISIBLE);
         } else {
             views.setViewVisibility(R.id.recipe_example_widget_item_text, View.GONE);
         }
     }
-//    private static void setNonEmptyWidgets(Context context, int[] appWidgetIds,
-//                                           AppWidgetManager appWidgetManager, boolean displayUIMessage) {
-//        for (int appWidgetId : appWidgetIds) {
-//
-//            // Construct the RemoteViews object
-//            RemoteViews views = getIngredientsRemoteListView(context);
-//
-//            setUpNonEmptyUIProperties(views);
-//
-//            // Set UI and listener
-//            MyUtilWidget.setWidgetUI(context, views, mRecipeSelected);
-//
-//            // Instruct the widget manager to update the widget
-//            appWidgetManager.updateAppWidget(appWidgetId, views);
-//        }
-//
-//    }
-//
-//    private static void setUpNonEmptyUIProperties(RemoteViews views) {
-//        views.setViewVisibility(R.id.widgetTitleLabel, View.VISIBLE);
-//        views.setViewVisibility(R.id.widgetListView, View.VISIBLE);
-//
-//
-//        if (MainActivity.mTabletPane) {
-//            views.setTextViewTextSize(R.id.widgetTitleLabel, COMPLEX_UNIT_SP, 24);
-//        }
-//
-//
-//    }
-//
-//    private static void setEmptyWidgetsUI(Context context, int[] appWidgetIds, AppWidgetManager appWidgetManager) {
-//        for (int appWidgetId : appWidgetIds) {
-//            // Construct the RemoteViews object
-//            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_app_widget_provider);
-//
-//            // Set up UI and listener
-//            setUpEmptyUIProperties(context, views);
-//
-//            // Update widget
-//            appWidgetManager.updateAppWidget(appWidgetId, views);
-//        }
-//    }
-//
-//
-//    private RemoteViews getIngredientsRemoteListView(Context context) {
-//        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_app_widget_provider);
-//
-//        Intent intent = new Intent(context, RecipeAppWidgetService.class);
-//        views.setRemoteAdapter(R.id.widgetListView, intent);
-//
-//        views.setEmptyView(R.id.widgetListView, R.id.empty_widgetTitleLabel );
-//
-//        return views;
-//    }
-//
-//    private static void setUpEmptyUIProperties(Context context, RemoteViews views) {
-//
-//
-//
-//        Log.i(TAG, "setUpEmptyUIProperties: inside function");
-//        if (MainActivity.mTabletPane) {
-//            views.setTextViewTextSize(R.id.widgetTitleLabel, COMPLEX_UNIT_SP, 24);
-//        }
-//    }
+
+    public void updateWidgetRecipe(Context context, AppWidgetManager appWidgetManager,
+                                   int recipeSelected, int[] appWidgetIds) {
+        Log.i(TAG, "updateWidgetRecipe: here is the recipeId..." + recipeSelected);
+
+        this.onUpdate(context, appWidgetManager, appWidgetIds);
+
+    }
 }
 

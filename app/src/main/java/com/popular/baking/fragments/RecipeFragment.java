@@ -80,9 +80,7 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnItemClic
     private void initRecycleView(Context context) {
 
 
-//        layoutManager = new LinearLayoutManager(context);
-
-        //Todo check for table and get correct layout
+        //check for table and get correct layout
 
         if (getActivity() instanceof MainActivity) {
 
@@ -90,7 +88,7 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnItemClic
             if (((MainActivity) getActivity()).mTabletPane) {
 
                 Log.d(TAG, "initRecycleView: I AM A TABLET");
-                linearLayoutManager = new GridLayoutManager(context, 3, RecyclerView.VERTICAL,
+                linearLayoutManager = new GridLayoutManager(context, 2, RecyclerView.VERTICAL,
                         false);
             } else {
 

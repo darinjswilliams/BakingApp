@@ -10,10 +10,10 @@ import android.widget.RemoteViewsService;
 
 import com.popular.baking.R;
 import com.popular.baking.constants.Constants;
-import com.popular.baking.dto.Ingredients;
 import com.popular.baking.dto.RecipeStepsAndIngredients;
 import com.popular.baking.networkUtils.AppRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeAppWidgetService extends RemoteViewsService {
@@ -27,9 +27,9 @@ public class RecipeAppWidgetService extends RemoteViewsService {
 
     class RecipeAppRemoteFactory implements RemoteViewsService.RemoteViewsFactory {
         private Context mContext;
-        private List <RecipeStepsAndIngredients> mIngredientsArrayList;
-        private List <Ingredients> mIngredientsArray;
+        private List <RecipeStepsAndIngredients> mIngredientsArray = new ArrayList<RecipeStepsAndIngredients>();
         private String recipeName;
+        private String listOfIngredients;
         private int appWidgetId;
         private AppRepository appRepository;
 
@@ -49,14 +49,14 @@ public class RecipeAppWidgetService extends RemoteViewsService {
             Log.i(TAG, "RecipeAppWidgetService: onCreate: ");
             SharedPreferences prefs = getApplicationContext().getSharedPreferences(Constants.PREF, Context.MODE_PRIVATE);
             int recipeId = prefs.getInt(Constants.RECIPE_ID, 0);
-            mIngredientsArrayList = appRepository.getIngridentsForWidgets(recipeId);
+            recipeName = prefs.getString(Constants.NAME_OF_RECIPE, null );
 
-            Log.i(TAG, "onCreate: not empty.." + mIngredientsArrayList.size());
-            if(mIngredientsArrayList.size() > 0) {
-                for (RecipeStepsAndIngredients rcp : mIngredientsArrayList) {
-                    Log.i(TAG, "onCreate: name " + rcp.ingredients);
-                    Log.i(TAG, "onCreate: recipe " + rcp.recipe.getName());
-                    recipeName = rcp.ingredients.toString();
+            mIngredientsArray = appRepository.getIngridentsForWidgets(recipeId);
+
+            Log.i(TAG, "onCreate: not empty.." + mIngredientsArray.size());
+            if(mIngredientsArray.size() > 0) {
+                for (RecipeStepsAndIngredients rcp : mIngredientsArray) { ;
+                    listOfIngredients = rcp.getFormatInfo();
                 }
 
             }
@@ -76,14 +76,15 @@ public class RecipeAppWidgetService extends RemoteViewsService {
         @Override
         public int getCount() {
             //Display items contain in List
-            return mIngredientsArrayList.size() > 0 ? mIngredientsArrayList.size() : 0;
+            return mIngredientsArray.size() > 0 ? mIngredientsArray.size() : 0;
         }
 
         @Override
         public RemoteViews getViewAt(int position) {
             //Load data onto fields
             RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.recipe_app_widget_item);
-            views.setTextViewText(R.id.recipe_example_widget_item_text, recipeName);
+            views.setTextViewText(R.id.recipe_example_widget_item_text, listOfIngredients);
+            views.setTextViewText(R.id.recipe_name_text, recipeName);
 
             return views;
         }

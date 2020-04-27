@@ -47,4 +47,5 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract RecipeDao recipeDao();
     public abstract IngredientsDao ingredientsDao();
     public abstract StepsDao stepsDao();
+
 }

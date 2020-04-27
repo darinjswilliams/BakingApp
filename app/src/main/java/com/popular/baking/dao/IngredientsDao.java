@@ -18,12 +18,6 @@ public interface IngredientsDao{
     void insertTask(List<Ingredients> ingredList);
 
 
-    @Query("SELECT * FROM Ingredients where recipeId = :recipeId")
-    List<Ingredients>getIngredients(int recipeId);
-
-    @Query("Select * from Ingredients")
-    Cursor getAll();
-
     @Query("Select * from Ingredients where recipeId = :recipeId")
     Cursor getSelectedIngredients(int recipeId);
 }

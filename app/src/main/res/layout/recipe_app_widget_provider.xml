@@ -7,9 +7,9 @@
     android:padding="@dimen/widget_margin">
 
     <TextView
-        android:id="@+id/widgetTitleLabel"
+        android:id="@+id/widgetTitleLabel_text"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/text_standard_size"
+        android:layout_height="49dp"
         android:background="@color/colorPrimary"
         android:contentDescription="@string/appwidget_text"
         android:gravity="center"

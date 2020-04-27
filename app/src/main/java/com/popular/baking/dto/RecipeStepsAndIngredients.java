@@ -35,4 +35,21 @@ public class RecipeStepsAndIngredients {
                 "Steps:" + steps.toString();
 
     }
+
+
+    public String getFormatInfo() {
+        StringBuilder sb = new StringBuilder();
+        for(Ingredients ingList: ingredients) {
+            sb.append(ingList.getQuantity());
+            sb.append(" ");
+            sb.append(ingList.getMeasure().toLowerCase());
+            sb.append(" of ");
+            sb.append(ingList.getIngredient());
+            sb.append(".");
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+
 }
+

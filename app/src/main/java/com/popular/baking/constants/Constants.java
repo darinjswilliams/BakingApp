@@ -35,4 +35,5 @@ public class Constants {
     public static final String PREF = "Preferences";
     public static final int defaultValue = 0;
     public static final String RECIPE_ID = "Id";
+    public static final String MAKE_DETAIL_VISIBLE = "MAKE_DETAIL_VISIBLE" ;
 }

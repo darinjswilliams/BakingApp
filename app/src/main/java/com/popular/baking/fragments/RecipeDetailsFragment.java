@@ -1,6 +1,8 @@
 package com.popular.baking.fragments;
 
 import android.app.Application;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.gson.Gson;
 import com.popular.baking.R;
 import com.popular.baking.adapters.RecipeDetailsAdapter;
 import com.popular.baking.constants.Constants;
@@ -20,6 +21,7 @@ import com.popular.baking.networkUtils.LifeCycleEventManager;
 import com.popular.baking.view.MainActivity;
 import com.popular.baking.viewmodel.RecipeDetailsViewModel;
 import com.popular.baking.viewmodel.RecipeDetailsViewModelFactory;
+import com.popular.baking.widget.RecipeAppWidgetProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,12 +43,9 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
     private RecipeDetailsAdapter mRecipeDetailsAdapter;
     private MainActivity mHostActivty;
     private List<Ingredients> mIngredients = new ArrayList<Ingredients>();
-
-
-    //    private RecipeDetailsFragmentBinding recipeDetailsFragmentBinding;
+    private RecipeAppWidgetProvider recipeAppWidgetProvider;
     public int recipeId;
 
-    //Binding
 
     public RecipeDetailsFragment() {
     }
@@ -58,23 +57,17 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
         super.onCreateView(inflater, container, savedInstanceState);
 
         final View view = inflater.inflate(R.layout.recipe_details_fragment, container, false);
-//        recipeDetailsFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.recipe_details_fragment, container, false);
 
         //Check Bundle for Arguments
         Bundle arguments = getArguments();
 
 
-
         if (arguments != null) {
-
             recipeId = arguments.getInt(Constants.TAG_DETAILS_FRAGMENT_KEY, -1);
-
 
             //lets check state
             if (savedInstanceState != null && recipeId == -1) {
                 recipeId = savedInstanceState.getInt(Constants.SAVED_RECIPE_ID);
-
-
             }
 
             Log.i(TAG, "onCreateView: ID....." + recipeId);
@@ -99,14 +92,10 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
             mRecipeDetailsAdapter.setRecipeStepsAndIngredients(recipeStepsAndIngredients);
             getActivity().setTitle(recipeStepsAndIngredients.recipe.getName());
 
-            if(recipeStepsAndIngredients.recipe.getIngredients() != null) {
-                mIngredients.addAll(recipeStepsAndIngredients.recipe.getIngredients());
-                saveToSharePref(getActivity(), recipeStepsAndIngredients.recipe.getId());
-            }
+                saveToSharePref(getActivity(), recipeStepsAndIngredients.recipe.getId(), recipeStepsAndIngredients.recipe.getName());
         });
 
 
-//        return recipeDetailsFragmentBinding.getRoot().getRootView();
         return view;
     }
 
@@ -124,23 +113,27 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
         outState.putInt(Constants.SAVED_RECIPE_ID, recipeId);
     }
 
-    private void saveToSharePref(Context context, int recipeId) {
+    private void saveToSharePref(Context context, int recipeId, String rName) {
 
-        Log.i(TAG, "saveToSharePref: Saving Name.." + recipeId);
+        Log.i(TAG, "saveToSharePref: Saving Id.." + recipeId);
         SharedPreferences prefs = context.getSharedPreferences(Constants.PREF, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(mIngredients);
+        editor.clear();
         editor.putInt(Constants.RECIPE_ID, recipeId);
-        editor.putString(Constants.IngridentsAndStepKey, json);
+        editor.putString(Constants.NAME_OF_RECIPE, rName );
         editor.apply();
 
-        //Todo update the widget with current recipe details
+        recipeAppWidgetProvider = new RecipeAppWidgetProvider();
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, RecipeAppWidgetProvider.class));
+
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.recipe_example_widget_item_text);
+
+        recipeAppWidgetProvider.updateWidgetRecipe(context, appWidgetManager, recipeId, appWidgetIds);
 
     }
 
     private void bindRecylcerView(View view) {
-//        mRecylcerView = recipeDetailsFragmentBinding.getRoot().getRootView().findViewById(R.id.detail_fragment);
         mRecylcerView = view.findViewById(R.id.detail_fragment);
         mRecipeDetailsAdapter = new RecipeDetailsAdapter(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(),
@@ -163,11 +156,21 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
 
         fragment.setArguments(bundle);
 
-        getParentFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_containier, fragment, DetailsFragment.TAG)
-                .addToBackStack(null)
-                .commit();
+        if (((MainActivity) getActivity()).mTabletPane) {
+
+            getParentFragmentManager()
+                    .beginTransaction()
+                    .replace( R.id.fragment_details_containier, fragment, DetailsFragment.TAG)
+                    .addToBackStack(null)
+                    .commit();
+        } else {
+            getParentFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_containier, fragment, DetailsFragment.TAG)
+                    .addToBackStack(null)
+                    .commit();
+        }
+
     }
 
     @Override

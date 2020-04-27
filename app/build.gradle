@@ -36,7 +36,12 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+
+    //Card
     implementation "androidx.cardview:cardview:$cardview_version"
+
+    //ButterKnife
+    implementation 'com.jakewharton:butterknife:10.2.1'
 
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"

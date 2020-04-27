@@ -1,7 +1,7 @@
 package com.popular.baking.networkUtils;
 
-import android.app.Application;
 import android.content.Context;
+import android.database.Cursor;
 import android.util.Log;
 
 import com.popular.baking.dto.Ingredients;
@@ -32,13 +32,16 @@ public class AppRepository {
     private List<Recipe> mRecipe = new ArrayList<Recipe>();
     private List<Ingredients> mIngredientsList = new ArrayList<Ingredients>();
     private List<Steps> mStepsLists = new ArrayList<Steps>();
-    private List<RecipeStepsAndIngredients> mRecipeStepsAndIngredients = new ArrayList<RecipeStepsAndIngredients>();
+    private List<RecipeStepsAndIngredients> mIngredients = new ArrayList<RecipeStepsAndIngredients>();
     AppDatabase appDB;
     AppExecutors appExecutors;
 
-    public static AppRepository getInstance(Application application) {
-        if(ourInstance == null){
-            ourInstance = new AppRepository(application.getApplicationContext());
+    //Content Provider for widget
+    Cursor mCursor;
+
+    public static AppRepository getInstance(Context context) {
+        if (ourInstance == null) {
+            ourInstance = new AppRepository(context.getApplicationContext());
         }
 
         return ourInstance;
@@ -54,18 +57,18 @@ public class AppRepository {
 
     //** Retrofit Operations
 
-   public void loadRecipesFromWeb() {
+    public void loadRecipesFromWeb() {
         //Parse with retofit
-       call = mBakingApi.getRecipes();
+        call = mBakingApi.getRecipes();
 
 
         //Place in background thread
-        call.enqueue(new Callback <List<Recipe>>() {
+        call.enqueue(new Callback<List<Recipe>>() {
             @Override
             public void onResponse(@NonNull Call<List<Recipe>> call,
                                    @NonNull Response<List<Recipe>> response) {
                 Log.d(TAG, "onResponse: AppRepository success..");
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
 
                     List<Recipe> recipeList = response.body();
                     mIngredientsList = new ArrayList<>();
@@ -80,20 +83,20 @@ public class AppRepository {
                         bList.setIngredientsAndStepId();
                     }
 
-                        for(int i = 0; i < mIngredientsList.size(); i++){
-                            mIngredientsList.get(i).setId(i);
-                        }
+                    for (int i = 0; i < mIngredientsList.size(); i++) {
+                        mIngredientsList.get(i).setId(i);
+                    }
 
-                        for(int i = 0; i < mStepsLists.size(); i++){
-                            mStepsLists.get(i).setId(i);
-                            Log.i(TAG, "onResponse: Short Description .." + mStepsLists.get(i).getShortDescription());
-                        }
+                    for (int i = 0; i < mStepsLists.size(); i++) {
+                        mStepsLists.get(i).setId(i);
+                        Log.i(TAG, "onResponse: Short Description .." + mStepsLists.get(i).getShortDescription());
+                    }
 
 
-                        mRecipe.addAll(recipeList);
+                    mRecipe.addAll(recipeList);
 
-                        //insert into database
-                        insertRecipe();
+                    //insert into database
+                    insertRecipe();
 
                 }
 
@@ -113,7 +116,7 @@ public class AppRepository {
 
     //Retrieve Recipes
     //Room does back ground thread automatic, so do not call Executor
-    public LiveData<List<Recipe>> getRecipes(){
+    public LiveData<List<Recipe>> getRecipes() {
         Log.d(TAG, "get recipes ");
 
         loadRecipesFromWeb();
@@ -124,7 +127,7 @@ public class AppRepository {
 
 
     //Get Ingredients and Steps
-    public LiveData<RecipeStepsAndIngredients> getRecipeStepsAndIngredients(int id){
+    public LiveData<RecipeStepsAndIngredients> getRecipeStepsAndIngredients(int id) {
 
         Log.i(TAG, "getRecipeStepsAndIngredients: ");
         return appDB.recipeDao().getIngredientsAndSteps(id);
@@ -132,23 +135,23 @@ public class AppRepository {
     }
 
 
+    //Content Provider
     public List<RecipeStepsAndIngredients> getIngridentsForWidgets(int recipeId){
         Log.i(TAG, "getIngridentsForWidgets: ");
 
         appExecutors.mDbExecutor().execute(new Runnable() {
             @Override
             public void run() {
-               mRecipeStepsAndIngredients = appDB.recipeDao().getIngredientsAndStepsforWidget(recipeId);
+                mIngredients = appDB.recipeDao().getIngredientsAndStepsforWidget(recipeId);
             }
         });
 
-        return mRecipeStepsAndIngredients;
+        return mIngredients;
     }
 
 
-
     //Insert Recipe
-    public void insertRecipe(){
+    public void insertRecipe() {
         Log.d(TAG, "insertBakingList: ");
         appExecutors.mDbExecutor().execute(new Runnable() {
             @Override
@@ -156,14 +159,10 @@ public class AppRepository {
                 appDB.recipeDao().insertRecipe(mRecipe);
                 appDB.ingredientsDao().insertTask(mIngredientsList);
                 appDB.stepsDao().insertTask(mStepsLists);
-                Log.i(TAG, "run: Insert successful " + mRecipe.size());
-                Log.i(TAG, "run: Insert successful " + mIngredientsList.size());
-                Log.i(TAG, "run: Insert successful " + mStepsLists.size());
             }
         });
 
     }
-
 
 
 }

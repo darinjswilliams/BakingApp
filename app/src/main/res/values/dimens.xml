@@ -18,4 +18,5 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="widget_margin">8dp</dimen>
     <dimen name="fourSp_padding">4sp</dimen>
     <dimen name="twelve_dp">12sp</dimen>
+    <dimen name="eight_sp">8sp</dimen>
 </resources>

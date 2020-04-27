@@ -141,6 +141,10 @@ public class Ingredients implements Parcelable {
         return sb.toString();
     }
 
+    public String getFormattedString(){
+        return this.toString();
+    }
+
     public static final Creator<Ingredients> CREATOR = new Creator<Ingredients>() {
         @Override
         public Ingredients createFromParcel(Parcel in) {

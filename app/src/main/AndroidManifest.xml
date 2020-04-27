@@ -5,12 +5,13 @@
     <!-- Add the INTERNET permission -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.popular.baking.persistence.TERMS_READ"/>
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_chillies"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher_chillies_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <receiver android:name=".widget.RecipeAppWidgetProvider">
@@ -25,7 +26,6 @@
 
         <activity
             android:name=".view.MainActivity"
-            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_baking">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

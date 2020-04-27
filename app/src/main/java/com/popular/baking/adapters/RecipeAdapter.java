@@ -51,7 +51,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.MyRecipeHo
     public void onBindViewHolder(@NonNull MyRecipeHolder holder, int position) {
 
         Recipe recipe = mRecipes.get(position);
-//        holder.mTextView.setText(recipe.getName());
     holder.bind(recipe, this);
     }
 
@@ -79,26 +78,21 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.MyRecipeHo
         public MyRecipeHolder(@NonNull View itemView) {
             super(itemView);
             this.mTextView = itemView.findViewById(R.id.my_recipe_name);
-
         }
 
         @Override
         public void onClick(View v) {
             int index = getLayoutPosition();
             Recipe recipe = mRecipes.get(index);
-            //todo set click handerl
-            Log.d(TAG, "onClick: " + recipe.getName());
         }
 
 
         public void bind(Recipe recipe, RecipeAdapter mListener) {
 
-            Log.d(TAG, "bind: " + recipe.getName());
             mTextView.setText(recipe.getName());
 
             mTextView.setOnClickListener(v -> mListener.onItemClickListener.onClick(recipe));
         }
-
 
     }
 }

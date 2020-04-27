@@ -5,7 +5,7 @@
     android:minWidth="110dp"
     android:minResizeHeight="40dp"
     android:minHeight="110dp"
-    android:previewImage="@drawable/recipe_chillies"
+    android:previewImage="@drawable/chillies"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="180000"
     android:widgetCategory="home_screen"/>

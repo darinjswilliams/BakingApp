@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:layout_constraintGuide_percent="0.5">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        style="@style/linear_layout_match"
+        android:layout_height="wrap_content"
+        tools:context=".fragments.RecipeDetailsFragment"
+        android:layout_width="match_parent">
+
+
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/exo_video_player"
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            app:default_artwork="@drawable/exo_notification_small_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:use_artwork="true" />
+
+        <TextView
+            android:id="@+id/step_details"
+            style="@style/format_of_steps"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/exo_video_player"
+            tools:text="@tools:sample/lorem/random" />
+
+        <Button
+            android:id="@+id/previous_btn"
+            style="@style/button"
+            android:layout_width="179dp"
+            android:layout_height="61dp"
+            android:layout_marginTop="3dp"
+            android:text="@string/previous"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/step_details" />
+
+        <Button
+            android:id="@+id/next_btn"
+            style="@style/button"
+            android:layout_width="180dp"
+            android:layout_height="69dp"
+            android:layout_weight="1"
+            android:text="@string/next"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/step_details" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="196dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

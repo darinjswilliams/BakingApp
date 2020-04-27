@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.popular.baking.R;
@@ -21,10 +20,9 @@ import java.util.List;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     public FrameLayout paneTwo;
     public View divider;
     public ActivityMainBinding mBinding;
+    private boolean mVisiable = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Check Pane Layout to determine if it is a tablet or phone
+
         if((findViewById(R.id.recipe_linear_layout) != null)){
 
             Log.d(TAG, "onCreate: I AM A TABLET");
@@ -61,11 +61,7 @@ public class MainActivity extends AppCompatActivity {
             divider = findViewById(R.id.fragment_divider);
             paneOne =  mBinding.fragmentContainier;
             paneTwo =  mBinding.fragmentDetailsContainier;
-            ViewGroup.LayoutParams  layoutParams = paneOne.getLayoutParams();
-            layoutParams.width = MATCH_PARENT;
-
-            divider.setVisibility(View.GONE);
-            paneTwo.setVisibility(View.GONE);
+;
 
         } else {
             mTabletPane = false;
@@ -77,14 +73,13 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
 
-
-
-        RecipeFragment recipeFragment = new RecipeFragment();
-
-        fragmentManager.beginTransaction()
-                .add(R.id.fragment_containier, recipeFragment, RecipeFragment.TAG)
-                .addToBackStack(null)
-                .commit();
+        if (savedInstanceState == null) {
+            RecipeFragment recipeFragment = new RecipeFragment();
+            addFragment(recipeFragment, RecipeFragment.TAG);
+        } else {
+            mVisiable = savedInstanceState.getBoolean(Constants.MAKE_DETAIL_VISIBLE);
+            togglePane(mVisiable);
+        }
 
         new LifeCycleEventManager(TAG).registerLifeCycleEvent(getLifecycle());
 
@@ -95,15 +90,9 @@ public class MainActivity extends AppCompatActivity {
 
         if (fragmentManager.getBackStackEntryCount() == Constants.STACKCOUNT) {
             finish();
-        } else if (fragmentManager.getBackStackEntryCount() > Constants.STACKCOUNT) {
-
-            if (fragmentManager.getBackStackEntryCount() == Constants.STACK_ITEMS) {
-                setTitle("Recipe Details");
-            }
-            fragmentManager.popBackStack();
-
         } else {
-            super.onBackPressed();
+            if(mVisiable) togglePane( mVisiable );
+            fragmentManager.popBackStackImmediate();
         }
     }
 
@@ -125,6 +114,38 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             Log.i(TAG, "onClick: RecipeAcitivity");
+        }
+    }
+
+    private void addFragment(Fragment frag, String fragTag){
+        if(mTabletPane){
+            togglePane(mTabletPane);
+            launchFragment(frag, fragTag, false, R.id.fragment_details_containier);
+            return;
+        }
+
+        togglePane(mTabletPane);
+        launchFragment(frag, fragTag, !mTabletPane, R.id.fragment_containier);
+    }
+
+    private void togglePane(boolean viewSecondPane){
+        mVisiable = viewSecondPane;
+        if(mTabletPane){
+            paneTwo.setVisibility((viewSecondPane ? View.VISIBLE: View.GONE));
+            divider.setVisibility(viewSecondPane ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    private void launchFragment(Fragment fragment, String tag, boolean addToBackStack, int containier){
+        if(addToBackStack){
+            fragmentManager.beginTransaction()
+                    .replace(containier, fragment, RecipeFragment.TAG)
+                    .addToBackStack(tag)
+                    .commit();
+        }else{
+            fragmentManager.beginTransaction()
+                    .replace(containier, fragment, tag)
+                    .commit();
         }
     }
 }

@@ -90,7 +90,6 @@ public class DetailsFragment extends Fragment {
             steps = arguments.getParcelableArrayList(getString(R.string.ADDITIONAL_STEPS));
             nameOfRecipe = arguments.getString(Constants.NAME_OF_RECIPE);
 
-//            Log.i(TAG, "onCreateView: size of steps.." + steps.size());
             Log.i(TAG, "onCreateView: name of recipe.." + nameOfRecipe);
         }
 
