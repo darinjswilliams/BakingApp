@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setContentView(R.layout.activity_main);
 
-
         //Check Pane Layout to determine if it is a tablet or phone
 
         if((findViewById(R.id.recipe_linear_layout) != null)){

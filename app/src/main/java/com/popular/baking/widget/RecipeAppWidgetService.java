@@ -8,13 +8,17 @@ import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.popular.baking.R;
 import com.popular.baking.constants.Constants;
+import com.popular.baking.dto.Ingredients;
 import com.popular.baking.dto.RecipeStepsAndIngredients;
-import com.popular.baking.networkUtils.AppRepository;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 public class RecipeAppWidgetService extends RemoteViewsService {
 
@@ -27,39 +31,44 @@ public class RecipeAppWidgetService extends RemoteViewsService {
 
     class RecipeAppRemoteFactory implements RemoteViewsService.RemoteViewsFactory {
         private Context mContext;
-        private List <RecipeStepsAndIngredients> mIngredientsArray = new ArrayList<RecipeStepsAndIngredients>();
+        private List<RecipeStepsAndIngredients> mIngredientsArray = new ArrayList<RecipeStepsAndIngredients>();
+        private List<Ingredients> mIngArray = new ArrayList<Ingredients>();
         private String recipeName;
-        private String listOfIngredients;
         private int appWidgetId;
-        private AppRepository appRepository;
-
+        private StringBuilder sb = new StringBuilder();
 
         public RecipeAppRemoteFactory(Context mContext, Intent intent) {
             this.mContext = mContext;
             this.appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
-            appRepository = AppRepository.getInstance(getApplication());
         }
 
 
         @Override
         public void onCreate() {
+            loadSharePreferences();
 
+        }
+
+        private void loadSharePreferences() {
             //Connect to Data Source, no heavy operations
             Log.i(TAG, "RecipeAppWidgetService: onCreate: ");
             SharedPreferences prefs = getApplicationContext().getSharedPreferences(Constants.PREF, Context.MODE_PRIVATE);
-            int recipeId = prefs.getInt(Constants.RECIPE_ID, 0);
-            recipeName = prefs.getString(Constants.NAME_OF_RECIPE, null );
+            recipeName = prefs.getString(Constants.NAME_OF_RECIPE, null);
+            Gson gson = new Gson();
+            String json = prefs.getString(Constants.SAVE_LIST_FOR_WIDGET, null);
+            Type type = new TypeToken<ArrayList<Ingredients>>() {
+            }.getType();
+            mIngArray = gson.fromJson(json, type);
 
-            mIngredientsArray = appRepository.getIngridentsForWidgets(recipeId);
+            //travese alist of elements
+            ListIterator<Ingredients> igIter = mIngArray.listIterator();
+           while( igIter.hasNext() ){
+               sb.append( igIter.next() );
+               sb.append("\n");
+           }
 
-            Log.i(TAG, "onCreate: not empty.." + mIngredientsArray.size());
-            if(mIngredientsArray.size() > 0) {
-                for (RecipeStepsAndIngredients rcp : mIngredientsArray) { ;
-                    listOfIngredients = rcp.getFormatInfo();
-                }
 
-            }
         }
 
         @Override
@@ -76,14 +85,14 @@ public class RecipeAppWidgetService extends RemoteViewsService {
         @Override
         public int getCount() {
             //Display items contain in List
-            return mIngredientsArray.size() > 0 ? mIngredientsArray.size() : 0;
+            return 1;
         }
 
         @Override
         public RemoteViews getViewAt(int position) {
             //Load data onto fields
             RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.recipe_app_widget_item);
-            views.setTextViewText(R.id.recipe_example_widget_item_text, listOfIngredients);
+            views.setTextViewText(R.id.recipe_example_widget_item_text, sb.toString());
             views.setTextViewText(R.id.recipe_name_text, recipeName);
 
             return views;

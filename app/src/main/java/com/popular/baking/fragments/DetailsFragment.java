@@ -81,9 +81,7 @@ public class DetailsFragment extends Fragment {
             videoPlayedLast = savedInstanceState.getInt(Constants.PLAYED_LAST_VIDEO);
         }
 
-
         Bundle arguments = getArguments();
-
 
         if (arguments != null) {
 
@@ -156,8 +154,6 @@ public class DetailsFragment extends Fragment {
 
     private void exitFullScreenMode() {
 
-        //make details visiable when exiting full screen
-//        mFragmentDetailsBinding.innerStepDetails.setVisibility(View.VISIBLE);
         mFragmentDetailsBinding.stepDetails.setVisibility(View.VISIBLE);
 
         if (getActivity() instanceof MainActivity) {
@@ -181,7 +177,6 @@ public class DetailsFragment extends Fragment {
     private void enableFullScreenMode() {
 
         //Hide screen details on full screen
-//        mFragmentDetailsBinding.innerStepDetails.setVisibility(View.GONE);
         mFragmentDetailsBinding.stepDetails.setVisibility(View.GONE);
 
         if (getActivity() instanceof MainActivity) {
@@ -200,7 +195,6 @@ public class DetailsFragment extends Fragment {
     private void setVideoView(int position) {
 
         //Set Details for video
-//        mFragmentDetailsBinding.stepDetails.setText(steps.get(position).getDescription());
         String stepTextValues = steps.get(position).getDescription();
         Log.d(TAG, "setVideoView: Descriptions .." + steps.get(position).getDescription());
 
@@ -285,7 +279,6 @@ public class DetailsFragment extends Fragment {
         }
     }
 
-
     //check to see if video does exists
     private boolean videoDoesExists(String url, String thumbNailUrl) {
         return url != null && !url.isEmpty() || thumbNailUrl != null && !thumbNailUrl.isEmpty();
@@ -302,18 +295,15 @@ public class DetailsFragment extends Fragment {
         return validatedURL;
     }
 
-
     //DISPLAY PREVIOUS BUTTON
     private void displayPreviousBtn(int position) {
         int pos = position - 1;
 
         Log.d(TAG, "displayPreviousBtn:..Position" + position);
         mFragmentDetailsBinding.previousBtn.setVisibility(View.VISIBLE);
-
         mFragmentDetailsBinding.previousBtn.setOnClickListener(v -> moveToNewPosition(pos));
 
     }
-
 
     //Keep track of Video played
     private void moveToNewPosition(int pos) {
@@ -329,14 +319,8 @@ public class DetailsFragment extends Fragment {
     private void displayNextBtn(int position) {
         int pos = position + 1;
 
-        Log.d(TAG, "displayNextBtn: pos Next Button.." + pos);
-        Log.d(TAG, "displayNextBtn: position Next Button.." + position);
-
         mFragmentDetailsBinding.nextBtn.setVisibility(View.VISIBLE);
-
         mFragmentDetailsBinding.nextBtn.setOnClickListener(v -> moveToNewPosition(pos));
-
-
     }
 
     private void hidePreviousBtn() {
@@ -347,7 +331,6 @@ public class DetailsFragment extends Fragment {
     private void hideNextBtn() {
         mFragmentDetailsBinding.nextBtn.setVisibility(View.GONE);
     }
-
 
     private boolean enablePreviousBtn(int position) {
 
@@ -360,8 +343,6 @@ public class DetailsFragment extends Fragment {
     private boolean enableNextBtn(int position) {
 
         boolean enableNextBn = enableNextBn = position + 1 < steps.size() ? true : false;
-        Log.d(TAG, "enableNextBtn: " + enableNextBn);
-
         return enableNextBn;
     }
 
@@ -394,8 +375,6 @@ public class DetailsFragment extends Fragment {
             position = arguments.getInt(stepPositions);
             videoPlayedLast = position;
         }
-
-
         setVideoView(position);
     }
 }

@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -72,6 +71,7 @@ public class RecipeAppWidgetProvider extends AppWidgetProvider {
         // Enter relevant functionality for when the last widget is disabled
     }
 
+    //method is called first when place on screen and resized is done.
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.collection_widget_list_item);
@@ -95,10 +95,9 @@ public class RecipeAppWidgetProvider extends AppWidgetProvider {
 
     public void updateWidgetRecipe(Context context, AppWidgetManager appWidgetManager,
                                    int recipeSelected, int[] appWidgetIds) {
-        Log.i(TAG, "updateWidgetRecipe: here is the recipeId..." + recipeSelected);
-
         this.onUpdate(context, appWidgetManager, appWidgetIds);
 
     }
+
 }
 

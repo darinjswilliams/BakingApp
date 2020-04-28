@@ -11,7 +11,6 @@ import android.widget.RelativeLayout;
 import com.popular.baking.R;
 import com.popular.baking.adapters.RecipeAdapter;
 import com.popular.baking.constants.Constants;
-import com.popular.baking.databinding.RecipeFragmentBinding;
 import com.popular.baking.dto.Recipe;
 import com.popular.baking.networkUtils.LifeCycleEventManager;
 import com.popular.baking.view.MainActivity;
@@ -34,8 +33,6 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnItemClic
     private RecyclerView.LayoutManager layoutManager;
     private RecipeViewModel mRecipeViewModel;
     private LinearLayoutManager linearLayoutManager;
-    private RecipeFragmentBinding recipeFragmentBinding;
-
 
     public static final String TAG = RecipeFragment.class.getSimpleName();
 
@@ -56,7 +53,6 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnItemClic
         initRecycleView(getActivity());
 
         mRecipeViewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
-
 
         mRecipeViewModel.getRecipe().observe(getViewLifecycleOwner(), recipes -> {
             Log.d(TAG, "onCreateView: RecipeFragment.." + recipes.size());
@@ -79,7 +75,6 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnItemClic
 
     private void initRecycleView(Context context) {
 
-
         //check for table and get correct layout
 
         if (getActivity() instanceof MainActivity) {
@@ -91,10 +86,8 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnItemClic
                 linearLayoutManager = new GridLayoutManager(context, 2, RecyclerView.VERTICAL,
                         false);
             } else {
-
                 linearLayoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL,
                         false);
-
             }
 
         }
@@ -102,8 +95,6 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnItemClic
         mRecipeAdapter = new RecipeAdapter(this);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setAdapter(mRecipeAdapter);
-
-
     }
 
     @Override
@@ -118,13 +109,9 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnItemClic
         Log.d(TAG, "onClick: CODE FRAGEMENT DETAILS");
         Bundle arguments = new Bundle();
 
-        Log.d(TAG, "onClick: Name.." + recipe.getName());
-        Log.d(TAG, "onClick: id.." + recipe.getId());
-        Log.d(TAG, "onClick: Serving.." + recipe.getServings());
-
         arguments.putInt(Constants.TAG_DETAILS_FRAGMENT_KEY, recipe.getId());
         RecipeDetailsFragment fragment = new RecipeDetailsFragment();
-
+        Log.d(TAG, "onClick: here are the ingridents.." + recipe.getIngredients());
         //Pass bundle to fragment
         fragment.setArguments(arguments);
 

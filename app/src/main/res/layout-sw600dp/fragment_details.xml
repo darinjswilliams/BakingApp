@@ -5,6 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     app:layout_constraintGuide_percent="0.5">
 
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         style="@style/linear_layout_match"
         android:layout_height="wrap_content"
@@ -65,4 +69,5 @@
             app:layout_constraintGuide_begin="196dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
 </layout>

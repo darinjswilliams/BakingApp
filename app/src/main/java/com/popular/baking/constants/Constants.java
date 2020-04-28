@@ -36,4 +36,5 @@ public class Constants {
     public static final int defaultValue = 0;
     public static final String RECIPE_ID = "Id";
     public static final String MAKE_DETAIL_VISIBLE = "MAKE_DETAIL_VISIBLE" ;
+    public static final String SAVE_LIST_FOR_WIDGET = "SAVE_LIST_FOR_WIDGET";
 }

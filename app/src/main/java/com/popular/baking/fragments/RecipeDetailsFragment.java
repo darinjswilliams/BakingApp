@@ -1,10 +1,6 @@
 package com.popular.baking.fragments;
 
 import android.app.Application;
-import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -55,12 +51,10 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
                              @Nullable Bundle savedInstanceState) {
 
         super.onCreateView(inflater, container, savedInstanceState);
-
         final View view = inflater.inflate(R.layout.recipe_details_fragment, container, false);
 
         //Check Bundle for Arguments
         Bundle arguments = getArguments();
-
 
         if (arguments != null) {
             recipeId = arguments.getInt(Constants.TAG_DETAILS_FRAGMENT_KEY, -1);
@@ -69,7 +63,6 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
             if (savedInstanceState != null && recipeId == -1) {
                 recipeId = savedInstanceState.getInt(Constants.SAVED_RECIPE_ID);
             }
-
             Log.i(TAG, "onCreateView: ID....." + recipeId);
         }
 
@@ -92,7 +85,6 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
             mRecipeDetailsAdapter.setRecipeStepsAndIngredients(recipeStepsAndIngredients);
             getActivity().setTitle(recipeStepsAndIngredients.recipe.getName());
 
-                saveToSharePref(getActivity(), recipeStepsAndIngredients.recipe.getId(), recipeStepsAndIngredients.recipe.getName());
         });
 
 
@@ -113,25 +105,6 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
         outState.putInt(Constants.SAVED_RECIPE_ID, recipeId);
     }
 
-    private void saveToSharePref(Context context, int recipeId, String rName) {
-
-        Log.i(TAG, "saveToSharePref: Saving Id.." + recipeId);
-        SharedPreferences prefs = context.getSharedPreferences(Constants.PREF, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.clear();
-        editor.putInt(Constants.RECIPE_ID, recipeId);
-        editor.putString(Constants.NAME_OF_RECIPE, rName );
-        editor.apply();
-
-        recipeAppWidgetProvider = new RecipeAppWidgetProvider();
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, RecipeAppWidgetProvider.class));
-
-        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.recipe_example_widget_item_text);
-
-        recipeAppWidgetProvider.updateWidgetRecipe(context, appWidgetManager, recipeId, appWidgetIds);
-
-    }
 
     private void bindRecylcerView(View view) {
         mRecylcerView = view.findViewById(R.id.detail_fragment);
@@ -151,6 +124,7 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
                 recipeStepsAndIngredients.steps);
 
         bundle.putInt(getString(R.string.EXTRA_POSITION), position);
+        Log.i(TAG, "clickRecipeDetails: here is the recipt.ingridents.." + recipeStepsAndIngredients.recipe.getIngredients());
 
         bundle.putString(Constants.NAME_OF_RECIPE, recipeStepsAndIngredients.recipe.getName());
 
@@ -180,6 +154,7 @@ public class RecipeDetailsFragment extends Fragment implements RecipeDetailsAdap
         Bundle bundle = new Bundle();
         bundle.putString(getString(R.string.INGRIDENTS_EXTRA), recipeDetails);
         bundle.putString(Constants.NAME_OF_RECIPE, nameOfRecipe);
+        Log.i(TAG, "clickRecipeDetails: Here are recipeDetails.." + recipeDetails);
 
         fragment.setArguments(bundle);
 

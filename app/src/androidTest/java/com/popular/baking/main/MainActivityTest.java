@@ -13,7 +13,6 @@ import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
-import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
@@ -24,9 +23,10 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 @RunWith(AndroidJUnit4.class)
 public class MainActivityTest {
 
-    public static final String MYRecipe = "Cheesecake";
+    public static final String MYRecipe = "Nutella Pie";
     public static final int mRecipeCount = 4;
     public static final int ITEM_AT_POSITION = 1;
+    public static final String TAG = MainActivityTest.class.getSimpleName();
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
@@ -38,13 +38,17 @@ public class MainActivityTest {
         //Perform an action on the view
         //check the assertion results is expected output
         onView(ViewMatchers.withId (R.id.my_recycler_view))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(ITEM_AT_POSITION, click()));
+                .check(matches(isDisplayed()));
 
-        String itemElement = getApplicationContext().getResources().getString(R.id.my_recipe_name)
-                + String.valueOf(ITEM_AT_POSITION);
+        //check to see if Nutella Pie is displayed
+        onView(withText(MYRecipe)).check(matches(isDisplayed()));
 
-        onView(withText(itemElement)).check(matches(isDisplayed()));
+        //click on Nutella
+       onView(withId(R.id.my_recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(
+               ITEM_AT_POSITION, click()));
+
     }
+
 
     @Test
     public void countNumberOfCardViews(){

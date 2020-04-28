@@ -1,15 +1,24 @@
 package com.popular.baking.adapters;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
 import com.popular.baking.R;
 import com.popular.baking.constants.Constants;
 import com.popular.baking.databinding.IngredientItemsBinding;
+import com.popular.baking.dto.Ingredients;
 import com.popular.baking.dto.RecipeStepsAndIngredients;
 import com.popular.baking.networkUtils.BuildUtils;
+import com.popular.baking.widget.RecipeAppWidgetProvider;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -20,6 +29,9 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsAdap
     public RecipeStepsAndIngredients recipeStepsAndIngredients;
     public OnClickDetailListener onClickDetailListener;
     public final static String TAG = RecipeDetailsAdapter.class.getSimpleName();
+    private Context mContext;
+    private RecipeAppWidgetProvider recipeAppWidgetProvider;
+    public int recipeId;
 
 
     public RecipeDetailsAdapter(OnClickDetailListener onClickDetailListener) {
@@ -37,6 +49,9 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsAdap
     public RecipeDetailsAdapter.MyRecipeDetailsAdapterHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+
+        //Set Context
+        mContext = parent.getContext();
 
         IngredientItemsBinding ingredientItemsBinding = DataBindingUtil.inflate(layoutInflater, R.layout.ingredient_items, parent,
                 false);
@@ -57,6 +72,9 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsAdap
                 holder.clickBindIngredients(BuildUtils.menuBuilderForIngridents(
                         recipeStepsAndIngredients.ingredients), this.onClickDetailListener,
                         recipeStepsAndIngredients.recipe.getName());
+
+                saveToSharePrefrences(recipeStepsAndIngredients.ingredients, recipeStepsAndIngredients.recipe.getName(),
+                        recipeStepsAndIngredients.recipe.getId());
                 break;
 
             default:
@@ -66,6 +84,29 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsAdap
                 break;
         }
 
+    }
+
+    private void saveToSharePrefrences(List<Ingredients> ingredientList, String rName, int rId) {
+        SharedPreferences prefs = mContext.getSharedPreferences(Constants.PREF, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        Log.i(TAG, "saveToSharePrefrences: " + ingredientList);
+        //Save Ingridents using Gson
+        Gson gson = new Gson();
+        String json = gson.toJson(ingredientList);
+        editor.putString(Constants.SAVE_LIST_FOR_WIDGET, json);
+        editor.putString(Constants.NAME_OF_RECIPE, rName );
+        editor.putInt(Constants.RECIPE_ID, recipeId);
+        editor.clear();
+        editor.apply();
+
+        recipeAppWidgetProvider = new RecipeAppWidgetProvider();
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(mContext);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(mContext, RecipeAppWidgetProvider.class));
+
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.recipe_example_widget_item_text);
+
+        recipeAppWidgetProvider.updateWidgetRecipe(mContext, appWidgetManager, recipeId, appWidgetIds);
     }
 
     @Override
@@ -97,20 +138,16 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsAdap
         }
 
         public void bind(String ingridents) {
-            Log.i(TAG, "bind: HERE ARE THE INGRIDENTS.." + ingridents);
             mIngredientItemsBinding.ingrds.setText(ingridents);
         }
 
         public void clickBindIngredients(String list, OnClickDetailListener onClickDetailListener, String ingredList) {
             mIngredientItemsBinding.executePendingBindings();
-            Log.i(TAG, "clickBindIngredients: Detail.." + list);
             mIngredientItemsBinding.ingrds.setOnClickListener(v -> onClickDetailListener.clickRecipeDetails(list, ingredList));
-
         }
 
         public void bindRecipePosition(String shortDescription, RecipeStepsAndIngredients recipeStepsAndIngredients, OnClickDetailListener onClickDetailListener, int position) {
 
-            Log.i(TAG, "bindRecipePosition: ShortDescription.." + shortDescription);
             mIngredientItemsBinding.ingrds.setText(shortDescription);
 
             // Evaluates the pending bindings, updating any Views that have expressions bound to
@@ -119,7 +156,6 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsAdap
             mIngredientItemsBinding.ingrds.setOnClickListener(v -> onClickDetailListener.clickRecipeDetails(recipeStepsAndIngredients, position));
 
         }
-
 
     }
 }
